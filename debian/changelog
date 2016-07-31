@@ -1,3 +1,10 @@
+xf86-video-armsoc (1.4.0-0ubuntu2~0sunxi1) xenial; urgency=medium
+
+  * Fixup git packaging
+  * Add sunxi arm64 support
+
+ -- Simon Eisenmann <simon@longsleep.org>  Sun, 31 Jul 2016 19:08:39 +0200
+
 xf86-video-armsoc (1.4.0-0ubuntu2) xenial; urgency=medium
 
   * Rebuild against the new xserver.
