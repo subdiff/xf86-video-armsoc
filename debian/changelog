@@ -1,4 +1,10 @@
-xf86-video-armsoc (1.4.0-0ubuntu2+0sunxi2) trusty; urgency=medium
+xf86-video-armsoc (1.4.0-0ubuntu2+0sunxi4) xenial; urgency=medium
+
+  * Rebuild
+
+ -- Simon Eisenmann <simon@longsleep.org>  Mon, 01 Aug 2016 01:50:15 +0200
+
+xf86-video-armsoc (1.4.0-0ubuntu2+0sunxi2) xenial; urgency=medium
 
   * Use uaccess tag
 
