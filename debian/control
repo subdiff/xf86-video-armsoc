@@ -15,7 +15,7 @@ Build-Depends: debhelper (>= 8),
                x11proto-gl-dev,
                x11proto-xf86dri-dev,
                xutils-dev,
-               xserver-xorg-dev (>= 2:1.16.99.901)
+               xserver-xorg-dev (>= 2:1.16~)
 Standards-Version: 3.9.4
 
 Package: xserver-xorg-video-armsoc
