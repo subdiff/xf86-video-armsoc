@@ -19,12 +19,11 @@ Build-Depends: debhelper (>= 8),
 Standards-Version: 3.9.4
 
 Package: xserver-xorg-video-armsoc
-Architecture: armel armhf
-Depends: xserver-xorg-video-armsoc-exynos, ${misc:Depends}
+Architecture: armel armhf arm64
+Depends: xserver-xorg-video-armsoc-sunxi, ${misc:Depends}
 Description: X.Org X server -- ARM SoC display driver (transitional package)
  This driver for the X.Org X server (see xserver-xorg for a further
- description) provides support for OMAP2 and newer devices including
- Samsung Exynos5.
+ description) provides support for Sunxi devices including Pine A64.
  .
  The driver depends on drm support in the kernel, which is
  in the staging area of the mainline kernel since version 3.3.
@@ -40,11 +39,14 @@ Pre-Depends: ${misc:Pre-Depends}
 Depends: ${misc:Depends},
          ${shlibs:Depends},
          ${xviddriver:Depends}
-Conflicts: xserver-xorg-video-armsoc-pl111
+Conflicts:
+ xserver-xorg-video-armsoc-pl111,
+ xserver-xorg-video-armsoc-kirin,
+ xserver-xorg-video-armsoc-sunxi
 Breaks: xserver-xorg-video-armsoc (<< 0.6.0)
 Replaces: xserver-xorg-video-armsoc (<< 0.6.0)
 Provides: ${xviddriver:Provides}
-Description: X.Org X server -- ARM SoC display driver for Exynos DRM
+Description: X.Org X server -- ARM SoC display driver for sunxi DRM
  This driver for the X.Org X server (see xserver-xorg for a further
  description) provides support for OMAP2 and newer devices including
  Samsung Exynos5.
@@ -65,7 +67,10 @@ Pre-Depends: ${misc:Pre-Depends}
 Depends: ${misc:Depends},
          ${shlibs:Depends},
          ${xviddriver:Depends}
-Conflicts: xserver-xorg-video-armsoc-exynos
+Conflicts:
+ xserver-xorg-video-armsoc-exynos,
+ xserver-xorg-video-armsoc-kirin,
+ xserver-xorg-video-armsoc-sunxi
 Breaks: xserver-xorg-video-armsoc (<< 0.6.0)
 Replaces: xserver-xorg-video-armsoc (<< 0.6.0)
 Provides: ${xviddriver:Provides}
@@ -84,6 +89,60 @@ Description: X.Org X server -- ARM SoC display driver for pl111 DRM
  .
  This package contains the armsoc driver for the pl111 DRM driver.
 
+Package: xserver-xorg-video-armsoc-kirin
+Architecture: arm64
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends},
+         ${shlibs:Depends},
+         ${xviddriver:Depends}
+Conflicts:
+ xserver-xorg-video-armsoc-exynos,
+ xserver-xorg-video-armsoc-pl111,
+ xserver-xorg-video-armsoc-sunxi
+Breaks: xserver-xorg-video-armsoc (<< 0.6.0)
+Replaces: xserver-xorg-video-armsoc (<< 0.6.0)
+Provides: ${xviddriver:Provides}
+Description: X.Org X server -- ARM SoC display driver for kirin DRM
+ This driver for the X.Org X server (see xserver-xorg for a further
+ description) provides support for Kirin devices.
+ .
+ The driver depends on drm support in the kernel, which is
+ in the staging area of the mainline kernel since version 3.3.
+ .
+ More information about X.Org can be found at:
+  * <URL:http://www.X.org>
+  * <URL:http://xorg.freedesktop.org>
+  * <URL:http://lists.freedesktop.org/mailman/listinfo/xorg>
+ .
+ This package contains the armsoc driver for the kirin DRM driver.
+
+Package: xserver-xorg-video-armsoc-sunxi
+Architecture: arm64
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends},
+         ${shlibs:Depends},
+         ${xviddriver:Depends}
+Conflicts:
+ xserver-xorg-video-armsoc-exynos,
+ xserver-xorg-video-armsoc-pl111,
+ xserver-xorg-video-armsoc-kirin
+Breaks: xserver-xorg-video-armsoc (<< 0.6.0)
+Replaces: xserver-xorg-video-armsoc (<< 0.6.0)
+Provides: ${xviddriver:Provides}
+Description: X.Org X server -- ARM SoC display driver for sunxi DRM
+ This driver for the X.Org X server (see xserver-xorg for a further
+ description) provides support for Sunxi devices.
+ .
+ The driver depends on drm support in the kernel, which is
+ in the staging area of the mainline kernel since version 3.3.
+ .
+ More information about X.Org can be found at:
+  * <URL:http://www.X.org>
+  * <URL:http://xorg.freedesktop.org>
+  * <URL:http://lists.freedesktop.org/mailman/listinfo/xorg>
+ .
+ This package contains the armsoc driver for the sunxi DRM driver.
+
 Package: xserver-xorg-video-armsoc-exynos-dbg
 Architecture: armel armhf
 Section: debug
@@ -92,7 +151,10 @@ Pre-Depends: ${misc:Pre-Depends}
 Depends: ${misc:Depends},
          ${shlibs:Depends},
          xserver-xorg-video-armsoc-exynos (= ${binary:Version})
-Conflicts: xserver-xorg-video-armsoc-pl111-dbg
+Conflicts:
+ xserver-xorg-video-armsoc-pl111-dbg,
+ xserver-xorg-video-armsoc-kirin-dbg,
+ xserver-xorg-video-armsoc-sunxi-dbg
 Breaks: xserver-xorg-video-armsoc-dbg (<< 0.6.0)
 Replaces: xserver-xorg-video-armsoc-dbg (<< 0.6.0)
 Description: X.Org X server -- ARM SoC display driver (debug symbols)
@@ -119,7 +181,10 @@ Pre-Depends: ${misc:Pre-Depends}
 Depends: ${misc:Depends},
          ${shlibs:Depends},
          xserver-xorg-video-armsoc-pl111 (= ${binary:Version})
-Conflicts: xserver-xorg-video-armsoc-exynos-dbg
+Conflicts:
+ xserver-xorg-video-armsoc-exynos-dbg,
+ xserver-xorg-video-armsoc-kirin-dbg,
+ xserver-xorg-video-armsoc-sunxi-dbg
 Breaks: xserver-xorg-video-armsoc-dbg (<< 0.6.0)
 Replaces: xserver-xorg-video-armsoc-dbg (<< 0.6.0)
 Description: X.Org X server -- ARM SoC display driver (debug symbols)
@@ -137,3 +202,61 @@ Description: X.Org X server -- ARM SoC display driver (debug symbols)
  .
  This package contains debugging symbols for
  xserver-xorg-video-armsoc-pl111.
+
+Package: xserver-xorg-video-armsoc-kirin-dbg
+Architecture: arm64
+Section: debug
+Priority: extra
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends},
+         ${shlibs:Depends},
+         xserver-xorg-video-armsoc-kirin (= ${binary:Version})
+Conflicts:
+ xserver-xorg-video-armsoc-exynos-dbg,
+ xserver-xorg-video-armsoc-pl111-dbg,
+ xserver-xorg-video-armsoc-sunxi-dbg
+Breaks: xserver-xorg-video-armsoc-dbg (<< 0.6.0)
+Replaces: xserver-xorg-video-armsoc-dbg (<< 0.6.0)
+Description: X.Org X server -- ARM SoC display driver (debug symbols)
+ This driver for the X.Org X server (see xserver-xorg for a further
+ description) provides support for Kirin devices.
+ .
+ The driver depends on drm support in the kernel, which is
+ in the staging area of the mainline kernel since version 3.3.
+ .
+ More information about X.Org can be found at:
+  * <URL:http://www.X.org>
+  * <URL:http://xorg.freedesktop.org>
+  * <URL:http://lists.freedesktop.org/mailman/listinfo/xorg>
+ .
+ This package contains debugging symbols for
+ xserver-xorg-video-armsoc-kirin.
+
+Package: xserver-xorg-video-armsoc-sunxi-dbg
+Architecture: arm64
+Section: debug
+Priority: extra
+Pre-Depends: ${misc:Pre-Depends}
+Depends: ${misc:Depends},
+         ${shlibs:Depends},
+         xserver-xorg-video-armsoc-sunxi (= ${binary:Version})
+Conflicts:
+ xserver-xorg-video-armsoc-exynos-dbg,
+ xserver-xorg-video-armsoc-pl111-dbg,
+ xserver-xorg-video-armsoc-kirin-dbg
+Breaks: xserver-xorg-video-armsoc-dbg (<< 0.6.0)
+Replaces: xserver-xorg-video-armsoc-dbg (<< 0.6.0)
+Description: X.Org X server -- ARM SoC display driver (debug symbols)
+ This driver for the X.Org X server (see xserver-xorg for a further
+ description) provides support for Sunxi devices.
+ .
+ The driver depends on drm support in the kernel, which is
+ in the staging area of the mainline kernel since version 3.3.
+ .
+ More information about X.Org can be found at:
+  * <URL:http://www.X.org>
+  * <URL:http://xorg.freedesktop.org>
+  * <URL:http://lists.freedesktop.org/mailman/listinfo/xorg>
+ .
+ This package contains debugging symbols for
+ xserver-xorg-video-armsoc-sunxi.

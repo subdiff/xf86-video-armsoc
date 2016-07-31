@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-DRMMODES = exynos pl111
+DRMMODES = exynos pl111 kirin sunxi
 COMMON_CONFIGURE_FLAGS = $(shell dpkg-buildflags --export=configure)
 
 %:
