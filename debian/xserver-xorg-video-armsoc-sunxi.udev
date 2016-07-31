@@ -6,6 +6,6 @@ ENV{ACL_MANAGE}=="0", GOTO="mali_gpu_end"
 ACTION!="add|change", GOTO="mali_gpu_end"
 
 # graphics devices
-ACTION=="add|change", KERNEL=="mali*", TAG+="udev-acl"
+ACTION=="add|change", KERNEL=="mali*", TAG+="uaccess", TAG+="udev-acl"
 
 LABEL="mali_gpu_end"
