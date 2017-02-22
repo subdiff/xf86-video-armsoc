@@ -931,6 +931,7 @@ drmmode_output_mode_valid(xf86OutputPtr output, DisplayModePtr mode)
 		/* Default modes are harmful here. */
 		return MODE_BAD;
 
+
 	return MODE_OK;
 }
 
@@ -1011,7 +1012,25 @@ drmmode_output_destroy(xf86OutputPtr output)
 	free(drmmode_output);
 	output->driver_private = NULL;
 }
+/*
+static void stack_dump(void)
+{
+    const int BT_SIZE = 6;
+    void *array[BT_SIZE];
+    const char **mod;
+    int size, i;
+    Dl_info info;
 
+    ErrorFSigSafe("\n");
+    ErrorFSigSafe("Backtrace:\n");
+    size = backtrace(array, BT_SIZE);
+    mod = backtrace_symbols(array[i], size);
+
+    for (i = 0; i < size; i++) {
+            xf86Msg(X_ERROR,"%s\n",mod[i]);
+    }
+}
+*/
 static void
 drmmode_output_dpms(xf86OutputPtr output, int mode)
 {
@@ -1020,7 +1039,9 @@ drmmode_output_dpms(xf86OutputPtr output, int mode)
 	drmModePropertyPtr prop;
 	struct drmmode_rec *drmmode = drmmode_output->drmmode;
 	int mode_id = -1, i;
-
+    xf86Msg(X_ERROR,"MODE :%d  \n",mode);
+//    xorg_backtrace();
+//    stack_dump();
 	for (i = 0; i < connector->count_props; i++) {
 		prop = drmModeGetProperty(drmmode->fd, connector->props[i]);
 		if (!prop)

@@ -375,6 +375,8 @@ ARMSOCDRI2ReferenceBuffer(DRI2BufferPtr buffer)
 /**
  *
  */
+static struct armsoc_bo *boFromBuffer(DRI2BufferPtr buf);
+int sunxi_rotate_copy(struct armsoc_bo *src_bo, struct armsoc_bo *dst_bo);
 static void
 ARMSOCDRI2CopyRegion(DrawablePtr pDraw, RegionPtr pRegion,
 		DRI2BufferPtr pDstBuffer, DRI2BufferPtr pSrcBuffer)
@@ -385,10 +387,17 @@ ARMSOCDRI2CopyRegion(DrawablePtr pDraw, RegionPtr pRegion,
 	DrawablePtr pDstDraw = dri2draw(pDraw, pDstBuffer);
 	RegionPtr pCopyClip;
 	GCPtr pGC;
-
+    struct armsoc_bo *src_bo, *dst_bo;
+    src_bo = boFromBuffer(pSrcBuffer);
+	dst_bo = boFromBuffer(pDstBuffer);
 	DEBUG_MSG("pDraw=%p, pDstBuffer=%p (%p), pSrcBuffer=%p (%p)",
 			pDraw, pDstBuffer, pSrcDraw, pSrcBuffer, pDstDraw);
+    xf86Msg(X_INFO," haredware rotate  bbbbbbb\n");
 
+    if(!sunxi_rotate_copy(src_bo, dst_bo)) {
+        xf86Msg(X_ERROR," haredware rotate  err\n");
+        return;
+    }
 	pGC = GetScratchGC(pDstDraw->depth, pScreen);
 	if (!pGC)
 		return;

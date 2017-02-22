@@ -735,6 +735,8 @@ static struct drmmode_interface *get_drmmode_implementation(int drm_fd)
 	struct drmmode_interface *ifaces[] = {
 		&exynos_interface,
 		&pl111_interface,
+		&kirin_interface,
+		&sunxi_interface,
 	};
 	int i;
 
@@ -746,6 +748,8 @@ static struct drmmode_interface *get_drmmode_implementation(int drm_fd)
 		struct drmmode_interface *iface = ifaces[i];
 		if (strcmp(version->name, iface->driver_name) == 0) {
 			ret = iface;
+	            xf86Msg(X_INFO, "######%s\n",iface->driver_name);
+
 			break;
 		}
 	}
@@ -1170,7 +1174,6 @@ ARMSOCScreenInit(SCREEN_INIT_ARGS_DECL)
 	} else {
 		pARMSOC->lockFD = -1;
 	}
-
 	TRACE_EXIT();
 	return TRUE;
 

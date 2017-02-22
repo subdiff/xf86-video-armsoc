@@ -1,3 +1,0 @@
-extend-diff-ignore = "Makefile"
-extend-diff-ignore = "Makefile.in"
-

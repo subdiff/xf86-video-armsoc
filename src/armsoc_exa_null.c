@@ -53,12 +53,41 @@ PrepareSolidFail(PixmapPtr pPixmap, int alu, Pixel planemask, Pixel fill_colour)
 {
 	return FALSE;
 }
-
+int sunxi_rotate_copy(struct armsoc_bo *src_bo, struct armsoc_bo *dst_bo);
 static Bool
-PrepareCopyFail(PixmapPtr pSrc, PixmapPtr pDst, int xdir, int ydir,
+sunxiPrepareCopy(PixmapPtr pSrc, PixmapPtr pDst, int xdir, int ydir,
 		int alu, Pixel planemask)
 {
+    struct ARMSOCPixmapPrivRec *priv_src = exaGetPixmapDriverPrivate(pSrc);
+    struct ARMSOCPixmapPrivRec *priv_dst = exaGetPixmapDriverPrivate(pDst);
+    ScreenPtr pScreen = pSrc->drawable.pScreen;
+	ScrnInfoPtr pScrn = xf86Screens[pScreen->myNum];
+    struct ARMSOCRec *pARMSOC = ARMSOCPTR(pScrn);
+    struct armsoc_bo *src_bo = priv_src->bo;
+    struct armsoc_bo *dst_bo = priv_dst->bo;
+    if(pARMSOC->scanout == dst_bo)
+    {
+        //xf86Msg(X_INFO,"########copy dispay#######\n");
+        if (armsoc_bo_width(src_bo) == armsoc_bo_width(dst_bo) &&
+	    armsoc_bo_height(src_bo) == armsoc_bo_height(dst_bo) &&
+	    armsoc_bo_bpp(src_bo) == armsoc_bo_bpp(dst_bo) &&
+        armsoc_bo_depth(src_bo) == armsoc_bo_depth(dst_bo)) {
+            //if(sunxi_rotate_copy(src_bo, dst_bo))// we not support crop,so del it
+                return FALSE;
+            return TRUE;
+        }
+    }
 	return FALSE;
+}
+static void sunxiCopy (PixmapPtr pDstPixmap,
+                  int srcX,
+                  int srcY, int dstX, int dstY, int width, int height)
+{
+    return;
+}
+static void sunxiDoneCopy (PixmapPtr pDstPixmap)
+{
+    return ;
 }
 
 static Bool
@@ -146,7 +175,9 @@ InitNullEXA(ScreenPtr pScreen, ScrnInfoPtr pScrn, int fd)
 	exa->PixmapIsOffscreen = ARMSOCPixmapIsOffscreen;
 
 	/* Always fallback for software operations */
-	exa->PrepareCopy = PrepareCopyFail;
+	exa->PrepareCopy = sunxiPrepareCopy;
+    exa->Copy = sunxiCopy;
+    exa->DoneCopy = sunxiDoneCopy;
 	exa->PrepareSolid = PrepareSolidFail;
 	exa->CheckComposite = CheckCompositeFail;
 	exa->PrepareComposite = PrepareCompositeFail;
