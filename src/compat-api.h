@@ -46,25 +46,26 @@
 #define SCREEN_ARG_TYPE int
 #define SCREEN_PTR(arg1) ScreenPtr pScreen = screenInfo.screens[(arg1)]
 
-#define SCREEN_INIT_ARGS_DECL int index, ScreenPtr pScreen, int argc, char **argv
+#define SCREEN_INIT_ARGS_DECL int i, ScreenPtr pScreen, int argc, char **argv
 
-#define BLOCKHANDLER_ARGS_DECL int arg, pointer blockData, pointer pTimeout, pointer pReadmask
+#define BLOCKHANDLER_ARGS_DECL \
+	int arg, pointer blockData, pointer pTimeout, pointer pReadmask
 #define BLOCKHANDLER_ARGS arg, blockData, pTimeout, pReadmask
 
 #define CLOSE_SCREEN_ARGS_DECL int scrnIndex, ScreenPtr pScreen
 #define CLOSE_SCREEN_ARGS scrnIndex, pScreen
 
 #define ADJUST_FRAME_ARGS_DECL int arg, int x, int y, int flags
+#define ADJUST_FRAME_ARGS(arg, x, y) (arg)->scrnIndex, x, y, 0
 
 #define SWITCH_MODE_ARGS_DECL int arg, DisplayModePtr mode, int flags
+#define SWITCH_MODE_ARGS(arg, m) (arg)->scrnIndex, m, 0
 
 #define FREE_SCREEN_ARGS_DECL int arg, int flags
 #define FREE_SCREEN_ARGS(x) (x)->scrnIndex, 0
 
 #define VT_FUNC_ARGS_DECL int arg, int flags
 #define VT_FUNC_ARGS(flags) pScrn->scrnIndex, (flags)
-
-#define ENABLE_DISABLE_FB_ACCESS_ARGS(pScrn, b) pScrn->scrnIndex, b
 
 #define XF86_ENABLEDISABLEFB_ARG(x) ((x)->scrnIndex)
 #else
@@ -81,10 +82,13 @@
 #endif
 
 #if ABI_VIDEODRV_VERSION >= SET_ABI_VERSION(23, 0)
-#define BLOCKHANDLER_ARGS_DECL ScreenPtr arg, pointer pTimeout
+#define RELOAD_CURSORS_DEPRECATED 1
+#define BLOCKHANDLER_ARGS_DECL \
+	ScreenPtr arg, pointer pTimeout
 #define BLOCKHANDLER_ARGS arg, pTimeout
 #else
-#define BLOCKHANDLER_ARGS_DECL ScreenPtr arg, pointer pTimeout, pointer pReadmask
+#define BLOCKHANDLER_ARGS_DECL \
+	ScreenPtr arg, pointer pTimeout, pointer pReadmask
 #define BLOCKHANDLER_ARGS arg, pTimeout, pReadmask
 #endif
 
@@ -92,15 +96,16 @@
 #define CLOSE_SCREEN_ARGS pScreen
 
 #define ADJUST_FRAME_ARGS_DECL ScrnInfoPtr arg, int x, int y
+#define ADJUST_FRAME_ARGS(arg, x, y) arg, x, y
+
 #define SWITCH_MODE_ARGS_DECL ScrnInfoPtr arg, DisplayModePtr mode
+#define SWITCH_MODE_ARGS(arg, m) arg, m
 
 #define FREE_SCREEN_ARGS_DECL ScrnInfoPtr arg
 #define FREE_SCREEN_ARGS(x) (x)
 
 #define VT_FUNC_ARGS_DECL ScrnInfoPtr arg
 #define VT_FUNC_ARGS(flags) pScrn
-
-#define ENABLE_DISABLE_FB_ACCESS_ARGS(pScrn, b) pScrn, b
 
 #define XF86_ENABLEDISABLEFB_ARG(x) (x)
 
