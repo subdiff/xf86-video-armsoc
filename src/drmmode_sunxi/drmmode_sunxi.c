@@ -1,5 +1,6 @@
 /*
  * Copyright © 2013 ARM Limited.
+ * Copyright © 2017 David Edmundson (davidedmundson@kde.org)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
  * copy of this software and associated documentation files (the "Software"),
@@ -67,7 +68,35 @@ enum armsoc_buf_type buf_type;
 /* Padding added down each side of cursor image */
 #define CURSORPAD (0)
 
-/* Optional function only for HWCURSOR_API_PLANE interface */
+static int init_plane_for_cursor(int drm_fd, uint32_t plane_id)
+{
+	int res = -1;
+	drmModeObjectPropertiesPtr props;
+	props = drmModeObjectGetProperties(drm_fd, plane_id,
+			DRM_MODE_OBJECT_PLANE);
+
+	if (props) {
+		int i;
+		for (i = 0; i < props->count_props; i++) {
+			drmModePropertyPtr this_prop;
+			this_prop = drmModeGetProperty(drm_fd, props->props[i]);
+
+			if (this_prop) {
+				if (!strncmp(this_prop->name, "zpos",
+							DRM_PROP_NAME_LEN)) {
+					res = drmModeObjectSetProperty(drm_fd,
+							plane_id,
+							DRM_MODE_OBJECT_PLANE,
+							this_prop->prop_id,
+							1);
+				}
+				drmModeFreeProperty(this_prop);
+                        }
+		}
+		drmModeFreeObjectProperties(props);
+	}
+	return res;
+}
 
 int sunxi_rotate_copy(struct armsoc_bo *src_bo, struct armsoc_bo *dst_bo)
 {
@@ -170,8 +199,8 @@ struct drmmode_interface sunxi_interface = {
 	CURSORW               /* cursor width */,
 	CURSORH               /* cursor_height */,
 	CURSORPAD             /* cursor padding */,
-	HWCURSOR_API_NONE   /* cursor_api */,
-	NULL                /* init_plane_for_cursor */,
+	HWCURSOR_API_PLANE   /* cursor_api */,
+	init_plane_for_cursor                /* init_plane_for_cursor */,
 	0                     /* vblank_query_supported */,
 	create_custom_gem     /* create_custom_gem */,
 };
