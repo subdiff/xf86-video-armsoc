@@ -626,6 +626,8 @@ drmmode_load_cursor_argb(xf86CrtcPtr crtc, CARD32 *image)
 		drmmode_show_cursor_image(crtc, TRUE);
 }
 
+#define MIN_PLANES 8
+
 static Bool
 drmmode_cursor_init_plane(ScreenPtr pScreen)
 {
@@ -660,7 +662,7 @@ drmmode_cursor_init_plane(ScreenPtr pScreen)
 		return FALSE;
 	}
 
-	if (plane_resources->count_planes < 9) {
+	if (plane_resources->count_planes < MIN_PLANES + 1) {
 		ERROR_MSG("not enough planes for HW cursor");
 		drmModeFreePlaneResources(plane_resources);
 		return FALSE;
@@ -668,7 +670,7 @@ drmmode_cursor_init_plane(ScreenPtr pScreen)
 
         //DAVE - sunxi hack. We need the channel to be after the main buffer, which ends up on channel 1.
         //we have 4 planes per channel, so channel 2 == plane 8
-	ovr = drmModeGetPlane(drmmode->fd, plane_resources->planes[8]);
+	ovr = drmModeGetPlane(drmmode->fd, plane_resources->planes[MIN_PLANES]);
 	if (!ovr) {
 		ERROR_MSG("HW cursor: drmModeGetPlane failed: %s",
 					strerror(errno));
