@@ -281,7 +281,6 @@ drmmode_set_mode_major(xf86CrtcPtr crtc, DisplayModePtr mode,
 
 	TRACE_ENTER();
 
-	armsoc_bo_clear(pARMSOC->scanout);
 	fb_id = armsoc_bo_get_fb(pARMSOC->scanout);
 
 	if (fb_id == 0) {

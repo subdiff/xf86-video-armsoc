@@ -1016,6 +1016,7 @@ ARMSOCScreenInit(SCREEN_INIT_ARGS_DECL)
 	pARMSOC->scanout = armsoc_bo_new_with_dim(pARMSOC->dev, pScrn->virtualX,
 			pScrn->virtualY, depth, pScrn->bitsPerPixel,
 			ARMSOC_BO_SCANOUT);
+	armsoc_bo_clear(pARMSOC->scanout);
 	if (!pARMSOC->scanout) {
 		ERROR_MSG("Cannot allocate scanout buffer\n");
 		goto fail1;
